@@ -1,0 +1,247 @@
+<!-- default page -->
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="css/bootstrap.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/bootstrap-grid.min.css">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  
+
+    <title>FOOF STORE</title>
+  </head>
+  <body>
+
+    <style>
+
+        body{
+          background-color: blanchedalmond;
+        }
+        .sidenav {
+      height: 100%;
+      width: 250px;
+      position: fixed;
+      top: 0;
+      left: -250px;
+      background-color: #f8f9fa;
+      padding: 20px;
+      transition: left 0.3s ease;
+    }
+
+    .sidenav.active {
+      left: 0;
+    }
+
+    .sidenav a {
+      display: block;
+      padding: 10px;
+      margin-bottom: 10px;
+      text-decoration: none;
+      color: #000;
+    }
+
+    .search-container {
+      position: relative;
+      width: 600px;
+      height: 35px;
+      border-right: none;
+      padding-left: 2rem;
+    }
+
+    .search-input {
+      width: 100%;
+      height: 100%;
+      padding-right: 30px;
+      border-radius: 3rem;
+      border: none;
+      font-weight: 280;
+      font-family: Arial;
+    }
+
+    .search-icon {
+      position: absolute;
+      top: 50%;
+      right: 10px;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      cursor: pointer;
+    }
+
+
+    .close-btn {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      font-size: 20px;
+      color: #000;
+      cursor: pointer;
+    }
+
+    .bi-house-fill,
+    .bi-cart4
+    {
+        font-size: 23px;
+        padding-right:2rem;
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">FOOD STORE</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <!-- Search -->
+    <div class="search-container ml-auto">
+      <input type="text" class="search-input">
+      <button class="search-icon">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ml-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="#">
+            <i class="bi bi-house-fill"></i>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">
+            <i class="bi bi-cart4" id="cartContent"></i>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- Side Navbar -->
+  <div id="sideNavbar" class="sidenav">
+    <button class="close-btn">
+      <i class="bi bi-x"></i>
+    </button>
+    <a href="#"> <i class="bi bi-search"></i></a>
+    <a href="#">Home</a>
+    <div class="cart-sidebar">
+    <div class="cart-icon" onclick="toggleCart()">
+      <i class="fas fa-shopping-cart"></i>
+      <span id="cartCount">0</span>
+    </div>
+    <div class="cart-content" id="cartContent">
+      <h5>Cart</h5>
+      <ul id="cartItems"></ul>
+      <div>Total: $<span id="cartTotal">0</span></div>
+    </div>
+  </div>
+  </div>
+  <br>
+  <br>
+  
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4" style="background-color: red;">
+        <br>
+        <div style="display: flex; justify-content: center; ">
+            <br>
+            <br>
+          <img src="images/jollof-rice-nigeria.webp" width="250px" height="150px" >
+         
+        </div>
+        <section style="background-color: red; text-align: center;">
+            Price: $500
+            <div class="button-container">
+                <button type="button" class="btn btn-primary" onclick="addToCart(5)">Add To Cart</button>
+              </div>
+        </section>
+      </div>
+    </div>
+  </div>
+  
+
+  <!-- Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <script>
+
+    //cart
+    let cartItems = [];
+    let cartTotal = 0;
+
+    function addToCart(itemId) {
+      // Add item to the cart
+      const item = {
+        id: itemId,
+        name: `Item ${itemId}`,
+        price: 10 // Replace with actual price
+      };
+      cartItems.push(item);
+
+      // Update cart count and total
+      updateCartCount();
+      updateCartTotal();
+
+      // Display item in the cart sidebar
+      const cartItemsList = document.getElementById('cartItems');
+      const li = document.createElement('li');
+      li.textContent = `${item.name} - $${item.price}`;
+      cartItemsList.appendChild(li);
+    }
+
+    function updateCartCount() {
+      const cartCount = document.getElementById('cartCount');
+      cartCount.textContent = cartItems.length;
+    }
+
+    function updateCartTotal() {
+      cartTotal = cartItems.reduce((total, item) => total + item.price, 0);
+      const cartTotalElement = document.getElementById('cartTotal');
+      cartTotalElement.textContent = cartTotal;
+    }
+
+    function toggleCart() {
+      const cartContent = document.getElementById('cartContent');
+      cartContent.classList.toggle('show');
+    }
+    $(document).ready(function() {
+      $('.navbar-toggler').click(function() {
+        $('#sideNavbar').toggleClass('active');
+      });
+
+      // Hide search bar in collapsed navbar on smaller screens
+      function toggleSearchBar() {
+        if ($(window).width() <= 768) {
+          $('.search-container').hide();
+        } else {
+          $('.search-container').show();
+        }
+      }
+      $('.close-btn').click(function() {
+        $('#sideNavbar').removeClass('active');
+      });
+
+      $(document).click(function(e) {
+        if (!$(e.target).closest('.sidenav').length && !$(e.target).closest('.navbar-toggler').length) {
+          $('#sideNavbar').removeClass('active');
+        }
+    });
+
+      toggleSearchBar();
+
+      $(window).resize(function() {
+        toggleSearchBar();
+      });
+    });
+  </script>
+</body>
+</html>
+
+
